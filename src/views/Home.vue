@@ -1,18 +1,32 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <el-container>
+      <el-header>
+        <NavBar></NavBar>
+      </el-header>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+      <el-footer></el-footer>
+    </el-container>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import NavBar from '@/components/NavBar'
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    NavBar
   }
 }
 </script>
+
+<style scoped>
+.el-header, .el-footer{
+  line-height: 60px;
+  /*box-sizing: border-box;*/
+  /*background: #B3C0D1;*/
+}
+</style>

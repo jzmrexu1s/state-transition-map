@@ -6,7 +6,7 @@
         class="el-menu-demo"
         router
     >
-    <span>State-transition Map builder</span>
+    <span>State-transition Map Builder</span>
     <el-menu-item v-for="item in barData" :key="item.id" :index="item.href"> {{ item.name }}
     </el-menu-item>
     </el-menu>
@@ -18,7 +18,7 @@ export default {
   name: "NavBar",
   data() {
     return {
-      activeId: "draw",
+      activeId: "/draw",
       barData: [
         {id: "draw", name: "Draw", href:"/draw"},
         {id: "settings", name: "Settings", href:"/settings"}
@@ -27,8 +27,8 @@ export default {
   },
   methods: {
   },
-  mounted() {
-    this.activeId = this.$route.path.substring(1, this.$route.path.length)
+  created() {
+    this.activeId = this.$route.path
   }
 }
 </script>
@@ -42,6 +42,7 @@ span{
   line-height: 59px;
   margin-bottom: 1px;
   /*box-sizing: border-box;*/
+  font-weight: bold;
 }
 .el-menu{
 }

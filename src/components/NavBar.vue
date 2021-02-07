@@ -21,7 +21,7 @@ export default {
       activeId: "/draw",
       barData: [
         {id: "draw", name: "Draw", href:"/draw"},
-        {id: "settings", name: "Settings", href:"/settings"}
+        {id: "settings", name: "Configuration", href:"/settings"}
       ]
     }
   },
@@ -37,13 +37,26 @@ export default {
 .el-menu-demo{
 }
 span{
-  float: left;
-  display: inline-block;
-  line-height: 59px;
-  margin-bottom: 1px;
-  /*box-sizing: border-box;*/
-  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 10px;
+  line-height: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  border-right: 1px solid rgb(200, 200, 200);
+  font-weight: normal;
+  font-size: 1.1em;
 }
 .el-menu{
+  text-align: center;
+  width: 100%;
+  position: relative;
+}
+.el-menu .el-menu-item{
+  float: none;
+  display: inline-block;
+  font-size: 1em;
+  font-weight: bolder;
 }
 </style>

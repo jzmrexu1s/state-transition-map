@@ -29,16 +29,18 @@
     >
 
     </el-dialog>
+    <button @click="elementByValue">触发</button>
   </div>
 </template>
 
 <script>
-import Bus from '@/event-bus'
+import {Bus} from '@/event-bus'
 
 export default {
   name: "DrawCanvas",
   data() {
     return {
+      testVal: 10086,
       drawerConf: {
         title: '',
         visible: false,
@@ -54,6 +56,11 @@ export default {
         ]
       ],
 
+    }
+  },
+  methods: {
+    elementByValue: function () {
+      Bus.$emit('Assembly', this.testVal)
     }
   },
   mounted() {
@@ -83,7 +90,7 @@ export default {
 <style scoped>
 .base{
   width            : 100%;
-  height           : 500px;
+  height           : 700px;
   margin           : 0 auto;
   background-color : #f5f5f5;
 }

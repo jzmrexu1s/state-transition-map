@@ -10,7 +10,7 @@
         </keep-alive>
         <router-view v-if="!$route.meta.keepAlive"></router-view>
       </el-main>
-      <el-footer></el-footer>
+<!--      <el-footer></el-footer>-->
     </el-container>
   </div>
 </template>
@@ -31,5 +31,8 @@ export default {
   line-height: 60px;
   /*box-sizing: border-box;*/
   /*background: #B3C0D1;*/
+}
+.el-main{
+  height: 800px;
 }
 </style>

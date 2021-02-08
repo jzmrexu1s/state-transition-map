@@ -3,7 +3,9 @@
 <super-flow
     ref="superFlow"
     :node-list="nodeList"
+    :link-list="linkList"
     :origin="origin"
+    :graph-menu="graphMenuList"
 >
 <template v-slot:node="{meta}">
   <div :class="`flow-node flow-node-${meta.prop}`">
@@ -16,6 +18,14 @@
   </div>
 </template>
 </super-flow>
+<el-dialog
+    :title="drawerConf.title"
+    :visible.sync="drawerConf.visible"
+    :close-on-click-modal="false"
+    width="500px"
+>
+
+</el-dialog>
 </div>
 </template>
 
@@ -24,8 +34,21 @@ export default {
   name: "DrawCanvas",
   data() {
     return {
+      drawerConf: {
+        title: '',
+        visible: false,
+        type: null,
+        info: null,
+
+      },
       nodeList: [],
-      origin: [681, 465]
+      linkList: [],
+      origin: [681, 465],
+      graphMenuList: [
+          [
+            {label: "test"}
+          ]
+      ]
     }
   },
   mounted() {

@@ -63,16 +63,7 @@ export default {
 
   },
   watch: {
-    "emotionTypes": function (after, before) {
-      for (let type of after) {
-        if (!before[type]) {
 
-        }
-      }
-      for (let node of this.nodeList) {
-
-      }
-    }
   },
   mounted() {
     let vm = this

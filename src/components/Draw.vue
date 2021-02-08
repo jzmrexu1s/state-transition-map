@@ -27,9 +27,10 @@
         :close-on-click-modal="false"
         width="500px"
     >
-
     </el-dialog>
-    <button @click="elementByValue">触发</button>
+    <ul>
+      <li v-for="item in emotionTypes">{{ item }}</li>
+    </ul>
   </div>
 </template>
 
@@ -55,15 +56,29 @@ export default {
           {label: "test"}
         ]
       ],
-
+      emotionTypes: {}
     }
   },
   methods: {
-    elementByValue: function () {
-      Bus.$emit('Assembly', this.testVal)
+
+  },
+  watch: {
+    "emotionTypes": function (after, before) {
+      for (let type of after) {
+        if (!before[type]) {
+
+        }
+      }
+      for (let node of this.nodeList) {
+
+      }
     }
   },
   mounted() {
+    let vm = this
+    Bus.$on('SettingsToDraw', (data) => {
+      vm.emotionTypes = data
+    })
     setTimeout(() => {
       this.nodeList = [
         {
@@ -75,9 +90,7 @@ export default {
             'prop': 'start',
             'name': 'State1',
             'emotions': [
-              {'name': 'Fear', 'value': 10},
-              {'name': 'Happy', 'value': 20},
-              {'name': 'Sad', 'value': 30}
+              {'name': 'naive', 'value': 10}
             ]
           }
         },
@@ -106,6 +119,7 @@ export default {
   line-height : 32px;
   padding     : 0 12px;
   color       : #ffffff;
+  font-weight : bold;
 }
 .flow-node>section{
   text-align  : center;

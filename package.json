@@ -12,6 +12,7 @@
     "element-ui": "^2.4.5",
     "eslint-plugin-html": "^6.1.1",
     "vue": "^2.6.11",
+    "vue-color": "^2.8.1",
     "vue-router": "^3.2.0",
     "vue-super-flow": "file:src/vue-super-flow",
     "vue2-org-tree": "file:src/vue2-org-tree"

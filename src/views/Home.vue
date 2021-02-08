@@ -5,7 +5,10 @@
         <NavBar></NavBar>
       </el-header>
       <el-main>
-        <router-view></router-view>
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
       </el-main>
       <el-footer></el-footer>
     </el-container>

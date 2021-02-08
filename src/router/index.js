@@ -12,11 +12,17 @@ const routes = [
     children: [
       {
         path: '/draw',
-        component: () => import('@/components/Draw')
+        component: () => import('@/components/Draw'),
+        meta: {
+          keepAlive: true
+        }
       },
       {
         path: '/settings',
-        component: () => import('@/components/Settings')
+        component: () => import('@/components/Settings'),
+        meta: {
+          keepAlive: true
+        }
       }
     ]
   }

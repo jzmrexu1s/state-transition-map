@@ -14,6 +14,12 @@
     </header>
     <section>
       {{meta.desc}}
+      <el-table :data="meta.emotions">
+        <el-table-column prop="name" width="50">
+        </el-table-column>
+        <el-table-column prop="value" width="50">
+        </el-table-column>
+      </el-table>
     </section>
   </div>
 </template>
@@ -39,7 +45,6 @@ export default {
         visible: false,
         type: null,
         info: null,
-
       },
       nodeList: [],
       linkList: [],
@@ -48,7 +53,8 @@ export default {
           [
             {label: "test"}
           ]
-      ]
+      ],
+
     }
   },
   mounted() {
@@ -61,20 +67,14 @@ export default {
           'coordinate': [-200, -200],
           'meta': {
             'prop': 'start',
-            'name': '开始节点'
+            'name': '开始节点',
+            'emotions': [
+              {'name': 'Fear', 'value': 10},
+              {'name': 'Happy', 'value': 20},
+              {'name': 'Sad', 'value': 30}
+            ]
           }
         },
-        {
-          'id': 'nodefHsy9uJObPtdHZv1',
-          'width': 160,
-          'height': 80,
-          'coordinate': [-200, -148],
-          'meta': {
-            'prop': 'start',
-            'name': '审批节点',
-            'desc': '111111'
-          }
-        }
       ]
     }, 100)
   }
@@ -110,5 +110,10 @@ export default {
 }
 .flow-node-start>header{
   background-color : #55abfc;
+}
+.el-table{
+  /*height: 20px;*/
+  color: #42b983;
+  line-height: 10px;
 }
 </style>

@@ -5,6 +5,7 @@ import './plugins/element.js'
 import router from './router'
 import 'element-ui/lib/theme-chalk/index.css'
 import SuperFlow from 'vue-super-flow'
+import 'vue-super-flow/lib/index.css'
 
 Vue.use(SuperFlow)
 

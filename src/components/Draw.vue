@@ -1,13 +1,14 @@
 <template>
-<div>
-  <vue2-org-tree></vue2-org-tree>
-</div>
-
+  <div>
+    <draw-canvas></draw-canvas>
+  </div>
 </template>
 
 <script>
+import DrawCanvas from '@/components/DrawCanvas'
 export default {
-  name: "Draw"
+  name: "Draw",
+  components: {DrawCanvas}
 }
 
 </script>

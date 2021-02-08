@@ -4,9 +4,9 @@ import App from './App.vue'
 import './plugins/element.js'
 import router from './router'
 import 'element-ui/lib/theme-chalk/index.css'
-import Vue2OrgTree from 'vue2-org-tree'
+import SuperFlow from 'vue-super-flow'
 
-Vue.use(Vue2OrgTree)
+Vue.use(SuperFlow)
 
 Vue.config.productionTip = false
 

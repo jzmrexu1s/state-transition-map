@@ -14,12 +14,9 @@
     </header>
     <section>
       {{meta.desc}}
-      <el-table :data="meta.emotions">
-        <el-table-column prop="name" width="50">
-        </el-table-column>
-        <el-table-column prop="value" width="50">
-        </el-table-column>
-      </el-table>
+      <ul>
+        <li v-for="item in meta.emotions">{{ item.name }} --- {{ item.value }}</li>
+      </ul>
     </section>
   </div>
 </template>
@@ -62,12 +59,12 @@ export default {
       this.nodeList = [
         {
           'id': 'nodeS3WgFnzCI15X58Qw',
-          'width': 100,
-          'height': 80,
-          'coordinate': [-200, -200],
+          'width': 150,
+          'height': 150,
+          'coordinate': [-600, -400],
           'meta': {
             'prop': 'start',
-            'name': '开始节点',
+            'name': 'State1',
             'emotions': [
               {'name': 'Fear', 'value': 10},
               {'name': 'Happy', 'value': 20},
@@ -112,8 +109,10 @@ export default {
   background-color : #55abfc;
 }
 .el-table{
-  /*height: 20px;*/
   color: #42b983;
-  line-height: 10px;
+}
+ul{
+  padding-left: 0;
+  list-style: none;
 }
 </style>

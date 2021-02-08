@@ -2,7 +2,8 @@ module.exports = {
     root: true,
     parserOptions: {
         sourceType: 'module',
-        ecmaVersion: 6
+        ecmaVersion: 6,
+        parser: 'babel-eslint'
     },
     parser: "vue-eslint-parser",
     // required to lint *.vue files

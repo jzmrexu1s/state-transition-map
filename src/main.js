@@ -8,10 +8,13 @@ import SuperFlow from 'vue-super-flow'
 import 'vue-super-flow/lib/index.css'
 
 Vue.use(SuperFlow)
-
+const Bus = new Vue()
 Vue.config.productionTip = false
 
 new Vue({
   router,
-  render: h => h(App)
+  render: h => h(App),
+  data: {
+    Bus
+  }
 }).$mount('#app')

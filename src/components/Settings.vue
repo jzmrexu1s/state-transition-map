@@ -2,7 +2,7 @@
   <div>
     <el-row class="row-tight">
       <el-col :span="4"><div class="grid-title"></div></el-col>
-      <el-col :span="20"><div class="grid-title">Personality Types</div></el-col>
+      <el-col :span="20"><div class="grid-title">Status Types</div></el-col>
     </el-row>
     <el-row class="row-tight">
       <el-col :span="4"><div class="grid-title"></div></el-col>
@@ -14,12 +14,12 @@
         <div class="grid-title">
           <el-tag
               :key="item.name"
-              v-for="item in personalityTypes"
+              v-for="item in statusTypes"
               :color="item.color"
               closable
               :disable-transitions="false"
-              @click="handlePersonalityClickTag(item)"
-              @close="handlePersonalityCloseTag(item)"
+              @click="handleStatusClickTag(item)"
+              @close="handleStatusCloseTag(item)"
               effect="dark"
               type="info"
           >
@@ -27,15 +27,15 @@
           </el-tag>
           <el-input
               class="input-new-tag"
-              v-if="personalityInputVisible"
-              v-model="personalityInputValue"
+              v-if="statusInputVisible"
+              v-model="statusInputValue"
               ref="saveTagInput"
               size="small"
-              @keyup.enter.native="handlePersonalityInputConfirm"
-              @blur="handlePersonalityInputConfirm"
+              @keyup.enter.native="handleStatusInputConfirm"
+              @blur="handleStatusInputConfirm"
           >
           </el-input>
-          <el-button v-else class="button-new-tag" @click="personalityShowInput" size="small">Add New</el-button>
+          <el-button v-else class="button-new-tag" @click="statusShowInput" size="small">Add New</el-button>
         </div>
       </el-col>
     </el-row>
@@ -46,25 +46,25 @@
         <el-input
             class="input-range"
             size="small"
-            v-model="personalityRange[0]"
+            v-model="statusRange[0]"
         ></el-input>
         <span>to</span>
         <el-input
             class="input-range"
             size="small"
-            v-model="personalityRange[1]"
+            v-model="statusRange[1]"
         ></el-input>
       </div></el-col>
     </el-row>
     <el-dialog
         title="Pick a color"
-        :visible.sync="personalityColorPickerOn"
+        :visible.sync="statusColorPickerOn"
         width="30%"
-        @before-close="personalityColorPickerOn = false">
-      <chrome-picker v-model="personalitySelectedColor" />
+        @before-close="statusColorPickerOn = false">
+      <chrome-picker v-model="statusSelectedColor" />
       <span slot="footer" class="dialog-footer">
-    <el-button @click="personalityColorPickerOn = false" size="small">Cancel</el-button>
-    <el-button type="primary" @click="handlePersonalityColorSelectConfirm" size="small">Set</el-button>
+    <el-button @click="statusColorPickerOn = false" size="small">Cancel</el-button>
+    <el-button type="primary" @click="handleStatusColorSelectConfirm" size="small">Set</el-button>
   </span>
     </el-dialog>
   </div>
@@ -77,50 +77,50 @@ export default {
   name: "Settings",
   data () {
     return {
-      personalityTypes: [],
-      personalityInputVisible: false,
-      personalityInputValue: '',
-      personalitySelectedColor: '#194d33',
-      personalitySelectedIdx: 0,
-      personalityColorPickerOn: false,
-      personalityRange: [0, 100]
+      statusTypes: [],
+      statusInputVisible: false,
+      statusInputValue: '',
+      statusSelectedColor: '#194d33',
+      statusSelectedIdx: 0,
+      statusColorPickerOn: false,
+      statusRange: [0, 100]
     }
   },
   watch: {
-    personalityRange: function () {
-      Bus.$emit("setPersonalityRange", this.personalityRange)
+    statusRange: function () {
+      Bus.$emit("setStatusRange", this.statusRange)
     }
   },
   methods: {
-    handlePersonalityCloseTag: function (item) {
-      let id = this.personalityTypes.indexOf(item)
-      this.personalityTypes.splice(id, 1)
-      Bus.$emit("removePersonality", id)
-      console.log(this.personalityTypes)
-      this.personalityColorPickerOn = false
+    handleStatusCloseTag: function (item) {
+      let id = this.statusTypes.indexOf(item)
+      this.statusTypes.splice(id, 1)
+      Bus.$emit("removeStatus", id)
+      console.log(this.statusTypes)
+      this.statusColorPickerOn = false
     },
-    handlePersonalityClickTag: function (item) {
-      this.personalityColorPickerOn = true
-      this.personalitySelectedIdx = this.personalityTypes.indexOf(item)
+    handleStatusClickTag: function (item) {
+      this.statusColorPickerOn = true
+      this.statusSelectedIdx = this.statusTypes.indexOf(item)
     },
-    handlePersonalityInputConfirm: function () {
-      let inputValue = this.personalityInputValue;
-      if (inputValue && this.personalityTypes.every(item => item.name !== inputValue)) {
-        let newPersonality = {"name": inputValue, "color": "#408BE0"}
-        this.personalityTypes.push(newPersonality)
-        Bus.$emit("addPersonality", newPersonality)
+    handleStatusInputConfirm: function () {
+      let inputValue = this.statusInputValue;
+      if (inputValue && this.statusTypes.every(item => item.name !== inputValue)) {
+        let newStatus = {"name": inputValue, "color": "#408BE0"}
+        this.statusTypes.push(newStatus)
+        Bus.$emit("addStatus", newStatus)
       }
-      this.personalityInputVisible = false
-      this.personalityInputValue = ''
+      this.statusInputVisible = false
+      this.statusInputValue = ''
     },
-    handlePersonalityColorSelectConfirm: function () {
-      this.personalityColorPickerOn = false
-      console.log(this.personalitySelectedColor)
-      this.personalityTypes[this.personalitySelectedIdx].color = this.personalitySelectedColor.hex
-      Bus.$emit("setPersonalityColor", {"id": this.personalitySelectedIdx, "color": this.personalitySelectedColor.hex})
+    handleStatusColorSelectConfirm: function () {
+      this.statusColorPickerOn = false
+      console.log(this.statusSelectedColor)
+      this.statusTypes[this.statusSelectedIdx].color = this.statusSelectedColor.hex
+      Bus.$emit("setStatusColor", {"id": this.statusSelectedIdx, "color": this.statusSelectedColor.hex})
     },
-    personalityShowInput: function () {
-      this.personalityInputVisible = true
+    statusShowInput: function () {
+      this.statusInputVisible = true
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus();
       });

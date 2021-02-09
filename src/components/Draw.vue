@@ -15,7 +15,7 @@
           <section>
             {{meta.desc}}
             <ul>
-              <li v-for="item in meta.personality">{{ item.name }} --- {{ item.value }}</li>
+              <li v-for="item in meta.status">{{ item.name }} --- {{ item.value }}</li>
             </ul>
           </section>
         </div>
@@ -53,8 +53,8 @@ export default {
           {label: "test"}
         ]
       ],
-      personalityRange: [0, 100],
-      personalityTypes: [],
+      statusRange: [0, 100],
+      statusTypes: [],
     }
   },
   methods: {
@@ -65,25 +65,25 @@ export default {
   },
   mounted() {
     let vm = this
-    console.log(this.personalityTypes)
-    Bus.$on("setPersonalityRange", function (range) {
-      vm.personalityRange = range
+    console.log(this.statusTypes)
+    Bus.$on("setStatusRange", function (range) {
+      vm.statusRange = range
     })
-    Bus.$on("addPersonality", function (personality) {
-      vm.personalityTypes.push(personality)
+    Bus.$on("addStatus", function (status) {
+      vm.statusTypes.push(status)
       for (let node of vm.nodeList) {
-        node.meta.personality.push({'name': personality, 'value': vm.personalityRange[0]})
+        node.meta.status.push({'name': status, 'value': vm.statusRange[0]})
       }
     })
-    Bus.$on("removePersonality", function (id) {
+    Bus.$on("removeStatus", function (id) {
       console.log("id: ", id)
-      vm.personalityTypes.splice(id, 1)
+      vm.statusTypes.splice(id, 1)
       for (let node of vm.nodeList) {
-        node.meta.personality.splice(id, 1)
+        node.meta.status.splice(id, 1)
       }
     })
-    Bus.$on("setPersonalityColor", function (item) {
-      vm.personalityTypes[item.id].color = item.color
+    Bus.$on("setStatusColor", function (item) {
+      vm.statusTypes[item.id].color = item.color
     })
     setTimeout(() => {
       this.nodeList = [
@@ -95,7 +95,7 @@ export default {
           'meta': {
             'prop': 'start',
             'name': 'State1',
-            'personality': [
+            'status': [
             ]
           }
         },

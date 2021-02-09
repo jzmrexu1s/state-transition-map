@@ -30,7 +30,10 @@
                   width="50px"
               >
                 <template slot-scope="scope">
-                  <el-progress :stroke-width="10" :percentage="statusComputePercentage(scope.row.value)" :show-text="false"></el-progress>
+                  <el-progress :stroke-width="10"
+                               :percentage="statusComputePercentage(scope.row.value)"
+                               :show-text="false"
+                               :color="scope.row.color"></el-progress>
                 </template>
               </el-table-column>
               <el-table-column
@@ -97,12 +100,11 @@ export default {
       vm.statusTypes.push(status)
       for (let node of vm.nodeList) {
         console.log(node.meta.status)
-        node.meta.status.push({'name': status.name, 'value': vm.statusRange[0]})
+        node.meta.status.push({'name': status.name, 'value': vm.statusRange[0], 'color': status.color})
         console.log(node.meta.status)
       }
     })
     Bus.$on("removeStatus", function (id) {
-      console.log("id: ", id)
       vm.statusTypes.splice(id, 1)
       for (let node of vm.nodeList) {
         node.meta.status.splice(id, 1)
@@ -110,6 +112,9 @@ export default {
     })
     Bus.$on("setStatusColor", function (item) {
       vm.statusTypes[item.id].color = item.color
+      for (let node of vm.nodeList) {
+        node.meta.status[item.id].color = item.color
+      }
     })
     setTimeout(() => {
       this.nodeList = [
@@ -120,9 +125,9 @@ export default {
             'prop': 'start',
             'name': 'State1',
             'status': [
-              {'name': 'happy', 'value': 50},
-              {'name': 'sad', 'value': 20},
-              {'name': 'naive', 'value': 80}
+              {'name': 'happy', 'value': 50, 'color': "#abcdef"},
+              {'name': 'sad', 'value': 20, 'color': "#408BE0"},
+              {'name': 'naive', 'value': 80, 'color': "#408BE0"}
             ]
           }
         },

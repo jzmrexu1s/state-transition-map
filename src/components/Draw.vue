@@ -28,9 +28,6 @@
         width="500px"
     >
     </el-dialog>
-    <ul>
-      <li v-for="item in personalityTypes">{{ item }}</li>
-    </ul>
   </div>
 </template>
 
@@ -137,7 +134,7 @@ export default {
   word-break  : break-all;
 }
 .flow-node-start>header{
-  background-color : #55abfc;
+  background-color : rgba(100, 100, 100, 1);
 }
 .el-table{
   color: #42b983;

@@ -12,11 +12,33 @@
           <header class="ellipsis">
             {{meta.name}}
           </header>
-          <section>
+          <section class="node-table">
             {{meta.desc}}
-            <ul>
-              <li v-for="item in meta.status">{{ item.name }} --- {{ item.value }}</li>
-            </ul>
+            <el-table
+                :data="meta.status"
+                style="width: 100%; font-size: 0.7em"
+                :show-header="false"
+                :row-style="{height:'15px', border:'none', padding: '0'}"
+                :cell-style="{padding:'0'}"
+            >
+              <el-table-column
+                  prop="name"
+                  width="60px"
+                  :cell-style="{padding:'5px'}"
+              ></el-table-column>
+              <el-table-column
+                  width="50px"
+              >
+                <template slot-scope="scope">
+                  <el-progress :stroke-width="10" :percentage="statusComputePercentage(scope.row.value)" :show-text="false"></el-progress>
+                </template>
+              </el-table-column>
+              <el-table-column
+                  prop="value"
+                  width="30px"
+              >
+              </el-table-column>
+            </el-table>
           </section>
         </div>
       </template>
@@ -58,7 +80,9 @@ export default {
     }
   },
   methods: {
-
+    statusComputePercentage: function (value) {
+      return value * 100 / (this.statusRange[1] - this.statusRange[0])
+    }
   },
   watch: {
 
@@ -72,7 +96,9 @@ export default {
     Bus.$on("addStatus", function (status) {
       vm.statusTypes.push(status)
       for (let node of vm.nodeList) {
-        node.meta.status.push({'name': status, 'value': vm.statusRange[0]})
+        console.log(node.meta.status)
+        node.meta.status.push({'name': status.name, 'value': vm.statusRange[0]})
+        console.log(node.meta.status)
       }
     })
     Bus.$on("removeStatus", function (id) {
@@ -89,13 +115,14 @@ export default {
       this.nodeList = [
         {
           'id': 'nodeS3WgFnzCI15X58Qw',
-          'width': 150,
-          'height': 150,
           'coordinate': [-600, -400],
           'meta': {
             'prop': 'start',
             'name': 'State1',
             'status': [
+              {'name': 'happy', 'value': 50},
+              {'name': 'sad', 'value': 20},
+              {'name': 'naive', 'value': 80}
             ]
           }
         },
@@ -130,17 +157,33 @@ export default {
   text-align  : center;
   line-height : 20px;
   overflow    : hidden;
-  padding     : 6px 12px;
+  padding     : 2px 2px;
   word-break  : break-all;
 }
 .flow-node-start>header{
-  background-color : rgba(100, 100, 100, 1);
-}
-.el-table{
-  color: #42b983;
+  background-color : rgba(50, 50, 50, 1);
 }
 ul{
   padding-left: 0;
   list-style: none;
+}
+.el-table::before {
+  height: 0;
+}
+</style>
+<style>
+.el-progress-bar__innerText{
+  /*top: 4px;*/
+  /*right: -50px;*/
+  /*position: absolute;*/
+  color: black;
+}
+.cell{
+  padding: 0 0 0 3px !important;
+  line-height: 20px !important;
+}
+.super-flow__node{
+  width: auto !important;
+  height: auto !important;
 }
 </style>

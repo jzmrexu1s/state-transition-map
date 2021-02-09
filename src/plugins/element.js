@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Select, Container, Header, Main, Footer, Menu, MenuItem, Dialog, Table, TableColumn, Row, Col, Tag, Input } from 'element-ui'
+import { Button, Select, Container, Header, Main, Footer, Menu, MenuItem, Dialog, Table, TableColumn, Row, Col, Tag, Input, Progress } from 'element-ui'
 Vue.use(Button)
 Vue.use(Select)
 Vue.use(Container)
@@ -16,3 +16,4 @@ Vue.use(Col)
 Vue.use(Tag)
 Vue.use(Button)
 Vue.use(Input)
+Vue.use(Progress)

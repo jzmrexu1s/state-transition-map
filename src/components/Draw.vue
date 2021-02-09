@@ -15,7 +15,7 @@
           <section>
             {{meta.desc}}
             <ul>
-              <li v-for="item in meta.emotions">{{ item.name }} --- {{ item.value }}</li>
+              <li v-for="item in meta.personality">{{ item.name }} --- {{ item.value }}</li>
             </ul>
           </section>
         </div>
@@ -29,7 +29,7 @@
     >
     </el-dialog>
     <ul>
-      <li v-for="item in emotionTypes">{{ item }}</li>
+      <li v-for="item in personalityTypes">{{ item }}</li>
     </ul>
   </div>
 </template>
@@ -56,7 +56,8 @@ export default {
           {label: "test"}
         ]
       ],
-      emotionTypes: {}
+      personalityRange: [0, 100],
+      personalityTypes: [],
     }
   },
   methods: {
@@ -67,8 +68,25 @@ export default {
   },
   mounted() {
     let vm = this
-    Bus.$on('SettingsToDraw', (data) => {
-      vm.emotionTypes = data
+    console.log(this.personalityTypes)
+    Bus.$on("setPersonalityRange", function (range) {
+      vm.personalityRange = range
+    })
+    Bus.$on("addPersonality", function (personality) {
+      vm.personalityTypes.push(personality)
+      for (let node of vm.nodeList) {
+        node.meta.personality.push({'name': personality, 'value': vm.personalityRange[0]})
+      }
+    })
+    Bus.$on("removePersonality", function (id) {
+      console.log("id: ", id)
+      vm.personalityTypes.splice(id, 1)
+      for (let node of vm.nodeList) {
+        node.meta.personality.splice(id, 1)
+      }
+    })
+    Bus.$on("setPersonalityColor", function (item) {
+      vm.personalityTypes[item.id].color = item.color
     })
     setTimeout(() => {
       this.nodeList = [
@@ -80,8 +98,7 @@ export default {
           'meta': {
             'prop': 'start',
             'name': 'State1',
-            'emotions': [
-              {'name': 'naive', 'value': 10}
+            'personality': [
             ]
           }
         },

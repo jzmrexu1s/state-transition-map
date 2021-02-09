@@ -86,13 +86,17 @@ export default {
       personalityRange: [0, 100]
     }
   },
+  watch: {
+    personalityRange: function () {
+      Bus.$emit("setPersonalityRange", this.personalityRange)
+    }
+  },
   methods: {
-    testSetPersonalityTypes: function () {
-      this.personalityTypes = new Set(["Good", "Bad"])
-      Bus.$emit('SettingsToDraw', this.personalityTypes)
-    },
     handlePersonalityCloseTag: function (item) {
-      this.personalityTypes.splice(this.personalityTypes.indexOf(item), 1)
+      let id = this.personalityTypes.indexOf(item)
+      this.personalityTypes.splice(id, 1)
+      Bus.$emit("removePersonality", id)
+      console.log(this.personalityTypes)
       this.personalityColorPickerOn = false
     },
     handlePersonalityClickTag: function (item) {
@@ -102,7 +106,9 @@ export default {
     handlePersonalityInputConfirm: function () {
       let inputValue = this.personalityInputValue;
       if (inputValue && this.personalityTypes.every(item => item.name !== inputValue)) {
-        this.personalityTypes.push({"name": inputValue, "color": "#408BE0"})
+        let newPersonality = {"name": inputValue, "color": "#408BE0"}
+        this.personalityTypes.push(newPersonality)
+        Bus.$emit("addPersonality", newPersonality)
       }
       this.personalityInputVisible = false
       this.personalityInputValue = ''
@@ -111,6 +117,7 @@ export default {
       this.personalityColorPickerOn = false
       console.log(this.personalitySelectedColor)
       this.personalityTypes[this.personalitySelectedIdx].color = this.personalitySelectedColor.hex
+      Bus.$emit("setPersonalityColor", {"id": this.personalitySelectedIdx, "color": this.personalitySelectedColor.hex})
     },
     personalityShowInput: function () {
       this.personalityInputVisible = true
@@ -177,7 +184,7 @@ export default {
   vertical-align: bottom;
 }
 .row-tight {
-  margin-bottom: 5px
+  margin-bottom: 5px;
 }
 .el-tag {
   cursor: pointer;

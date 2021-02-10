@@ -20,6 +20,8 @@
                 :show-header="false"
                 :row-style="{height:'15px', border:'none', padding: '0'}"
                 :cell-style="{padding:'0'}"
+                @cell-click="handleStatusChangeValue"
+                :cell-class-name="statusTableCellClassName"
             >
               <el-table-column
                   prop="name"
@@ -40,6 +42,15 @@
                   prop="value"
                   width="30px"
               >
+                <template slot-scope="scope">
+                  <el-input v-if="scope.row.edit"
+                            v-model="scope.row.value"
+                            style="width: 100%"
+                            @blur="scope.row.edit"
+                            ref="value"
+                  ></el-input>
+                  <span v-else> {{ scope.row.value }} </span>
+                </template>
               </el-table-column>
             </el-table>
           </section>
@@ -53,6 +64,16 @@
         width="500px"
     >
     </el-dialog>
+    <el-row style="margin-top: 10px">
+      <el-col :span="24">
+        <el-input
+            type="textarea"
+            :rows="1"
+            placeholder="Description"
+            v-model="description">
+        </el-input>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -63,7 +84,7 @@ export default {
   name: "DrawCanvas",
   data() {
     return {
-      testVal: 10086,
+      description: '',
       drawerConf: {
         title: '',
         visible: false,
@@ -75,7 +96,25 @@ export default {
       origin: [681, 465],
       graphMenuList: [
         [
-          {label: "test"}
+          {
+            label: "+ State",
+            disable: false,
+            selected: (graph, coordinate) => {
+              console.log(graph)
+              let status = []
+              for (let type of this.statusTypes) {
+                status.push({'name': type.name, 'value': this.statusRange[0], 'color':type.color , 'edit': false})
+              }
+              this.nodeList.push({
+                coordinate: coordinate,
+                meta: {
+                  prop: 'start',
+                  name: 'State',
+                  status: status,
+                }
+              })
+              }
+          }
         ]
       ],
       statusRange: [0, 100],
@@ -85,6 +124,18 @@ export default {
   methods: {
     statusComputePercentage: function (value) {
       return value * 100 / (this.statusRange[1] - this.statusRange[0])
+    },
+    statusTableCellClassName: function ({row, column, rowIndex, columnIndex}) {
+      row.index = rowIndex
+      column.index = columnIndex
+    },
+    handleStatusChangeValue: function (row, column, cell, event) {
+      if (column.index === 2) {
+        row.edit = true
+        setTimeout(() => {
+          this.$refs[column.property].focus()
+        }, 20)
+      }
     }
   },
   watch: {
@@ -100,7 +151,11 @@ export default {
       vm.statusTypes.push(status)
       for (let node of vm.nodeList) {
         console.log(node.meta.status)
-        node.meta.status.push({'name': status.name, 'value': vm.statusRange[0], 'color': status.color})
+        node.meta.status.push({
+          'name': status.name,
+          'value': vm.statusRange[0],
+          'color': status.color,
+          'edit': false})
         console.log(node.meta.status)
       }
     })
@@ -119,15 +174,14 @@ export default {
     setTimeout(() => {
       this.nodeList = [
         {
-          'id': 'nodeS3WgFnzCI15X58Qw',
           'coordinate': [-600, -400],
           'meta': {
             'prop': 'start',
             'name': 'State1',
             'status': [
-              {'name': 'happy', 'value': 50, 'color': "#abcdef"},
-              {'name': 'sad', 'value': 20, 'color': "#408BE0"},
-              {'name': 'naive', 'value': 80, 'color': "#408BE0"}
+              {'name': 'happy', 'value': 50, 'color': "#abcdef", 'edit': false},
+              {'name': 'sad', 'value': 20, 'color': "#408BE0", 'edit': false},
+              {'name': 'naive', 'value': 80, 'color': "#408BE0", 'edit': false}
             ]
           }
         },
@@ -175,6 +229,14 @@ ul{
 .el-table::before {
   height: 0;
 }
+.grid-title {
+  border-radius: 4px;
+  min-height: 36px;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: left;
+  line-height: 36px;
+}
 </style>
 <style>
 .el-progress-bar__innerText{
@@ -190,5 +252,8 @@ ul{
 .super-flow__node{
   width: auto !important;
   height: auto !important;
+}
+.el-textarea__inner{
+  font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 </style>

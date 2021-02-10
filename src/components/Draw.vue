@@ -6,6 +6,8 @@
         :link-list="linkList"
         :origin="origin"
         :graph-menu="graphMenuList"
+        :link-menu="linkMenuList"
+        :link-desc="linkDesc"
     >
       <template v-slot:node="{meta}">
         <div :class="`flow-node flow-node-${meta.prop}`">
@@ -63,6 +65,38 @@
         :close-on-click-modal="false"
         width="500px"
     >
+      <el-form
+          @submit.native.prevent
+          ref="linkSettings"
+          :model="linkSetting">
+        <el-form-item
+            label="Method"
+            prop="desc">
+          <el-input
+              v-model="linkSetting.desc"
+              placeholder="">
+          </el-input>
+        </el-form-item>
+        <el-form-item
+            label="Possibility"
+            prop="possibility"
+        >
+          <el-input
+              v-model="linkSetting.possibility"
+              placeholder="From 0 to 1"
+          >
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span
+          slot="footer"
+          class="dialog-footer">
+        <el-button
+            type="primary"
+            @click="linkSettingSubmit">
+          Finish
+        </el-button>
+      </span>
     </el-dialog>
     <el-row style="margin-top: 10px">
       <el-col :span="24">
@@ -79,28 +113,53 @@
 
 <script>
 import {Bus} from '@/event-bus'
-
+import {Chrome} from 'vue-color'
 export default {
   name: "DrawCanvas",
+  components: {
+    'chrome-picker': Chrome
+  },
   data() {
     return {
       description: '',
       drawerConf: {
-        title: '',
+        title: 'Line Settings',
         visible: false,
         type: null,
         info: null,
+        open: (info) => {
+          let conf = this.drawerConf
+          conf.visible = true
+          conf.info = info
+          let that = this
+          setTimeout(function () {
+            that.$refs.linkSettings.resetFields()
+            if (!conf.info.meta) conf.info.meta = {}
+            that.$set(that.linkSetting, 'desc', info.meta ? info.meta.desc : '')
+            that.$set(that.linkSetting, 'possibility', info.meta ? info.meta.possibility: '')
+          }, 100)
+        }
       },
       nodeList: [],
       linkList: [],
       origin: [681, 465],
+      linkMenuList: [
+          [
+            {
+              label: "Edit...",
+              disable: false,
+              selected: (link, coordinate) => {
+                this.drawerConf.open(link)
+              }
+            }
+          ]
+      ],
       graphMenuList: [
         [
           {
             label: "+ State",
             disable: false,
             selected: (graph, coordinate) => {
-              console.log(graph)
               let status = []
               for (let type of this.statusTypes) {
                 status.push({'name': type.name, 'value': this.statusRange[0], 'color':type.color , 'edit': false})
@@ -119,6 +178,10 @@ export default {
       ],
       statusRange: [0, 100],
       statusTypes: [],
+      linkSetting: {
+        desc: '',
+        possibility: 0
+      }
     }
   },
   methods: {
@@ -136,6 +199,18 @@ export default {
           this.$refs[column.property].focus()
         }, 20)
       }
+    },
+    linkSettingSubmit() {
+      const conf = this.drawerConf
+      this.$set(conf.info.meta, 'desc', this.linkSetting.desc)
+      this.$set(conf.info.meta, 'possibility', this.linkSetting.possibility)
+      conf.visible = false
+    },
+    linkDesc(link) {
+      if (link.meta) {
+        return link.meta.desc +  ': ' + String(link.meta.possibility * 100) + '%'
+      }
+      return ''
     }
   },
   watch: {
@@ -256,5 +331,8 @@ ul{
 }
 .el-textarea__inner{
   font-family: Avenir, Helvetica, Arial, sans-serif;
+}
+.vc-chrome {
+  margin: 0 auto;
 }
 </style>

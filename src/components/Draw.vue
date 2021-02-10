@@ -181,6 +181,13 @@ export default {
               selected: (link, coordinate) => {
                 this.drawerConf.open(link)
               }
+            },
+            {
+              label: 'Remove',
+              disable: false,
+              selected: (link, coordinate) => {
+                link.remove()
+              }
             }
           ]
       ],

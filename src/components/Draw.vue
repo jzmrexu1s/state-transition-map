@@ -13,7 +13,12 @@
       <template v-slot:node="{meta}">
         <div :class="`flow-node flow-node-${meta.prop}`" v-if="meta.type === 'status'">
           <header class="ellipsis">
-            {{meta.name}}
+              <el-input v-if="meta.edit"
+                        v-model="meta.name"
+                        style="width: 100%"
+                        ref="value"
+                        @blur="meta.edit = false"></el-input>
+              <span v-else @click="meta.edit = true"> {{ meta.name }} </span>
           </header>
           <section class="node-table">
             {{meta.desc}}
@@ -49,8 +54,8 @@
                   <el-input v-if="scope.row.edit"
                             v-model="scope.row.value"
                             style="width: 100%"
-                            @blur="scope.row.edit"
                             ref="value"
+                            @blur="scope.row.edit = false"
                   ></el-input>
                   <span v-else> {{ scope.row.value }} </span>
                 </template>
@@ -185,13 +190,14 @@ export default {
             selected: (graph, coordinate) => {
               let status = []
               for (let type of this.statusTypes) {
-                status.push({'name': type.name, 'value': this.statusRange[0], 'color':type.color , 'edit': false})
+                status.push({'name': type.name, 'value': this.statusRange[0], 'color':type.color , 'edit': false, 'editHead': false})
               }
               this.nodeList.push({
                 coordinate: coordinate,
                 id: (Math.random()*10000000).toString(16).substr(0,4)+'-'+(new Date()).getTime()+'-'+Math.random().toString().substr(2,5),
                 meta: {
                   type: 'status',
+                  edit: false,
                   prop: 'start',
                   name: 'State',
                   status: status,
@@ -208,6 +214,7 @@ export default {
                 coordinate: coordinate,
                 meta: {
                   type: 'failure',
+                  edit: false,
                   prop: 'start',
                   name: 'State',
                   status: [],
@@ -237,7 +244,7 @@ export default {
       if (column.index === 2) {
         row.edit = true
         setTimeout(() => {
-          this.$refs[column.property].focus()
+          this.$refs.value.focus()
         }, 20)
       }
     },
@@ -254,9 +261,6 @@ export default {
       }
       return ''
     }
-  },
-  watch: {
-
   },
   mounted() {
     let vm = this
@@ -301,6 +305,7 @@ export default {
             'type': 'status',
             'prop': 'start',
             'name': 'State1',
+            'edit': false,
             'status': [
               {'name': 'happy', 'value': 50, 'color': "#abcdef", 'edit': false},
               {'name': 'sad', 'value': 20, 'color': "#408BE0", 'edit': false},
@@ -326,6 +331,7 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   word-wrap: break-word;
+  cursor: pointer;
 }
 .flow-node>header{
   font-size   : 14px;
@@ -360,6 +366,12 @@ ul{
   text-align: left;
   line-height: 36px;
 }
+.failure-div {
+  height: 50px;
+  line-height: 50px;
+  font-weight: bold;
+  color: darkred;
+}
 </style>
 <style>
 .el-progress-bar__innerText{
@@ -383,10 +395,14 @@ ul{
 .vc-chrome {
   margin: 0 auto;
 }
-.failure-div {
-  height: 50px;
-  line-height: 50px;
-  font-weight: bold;
-  color: darkred;
+.el-input__inner{
+  padding-left: 2px;
+  padding-right: 2px;
+  font-size: 0.8em;
+  line-height: 20px;
+  height: 20px;
+}
+.el-table_2_column_6{
+  cursor: pointer;
 }
 </style>

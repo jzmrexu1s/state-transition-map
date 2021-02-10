@@ -9,6 +9,7 @@
         :link-menu="linkMenuList"
         :node-menu="nodeMenuList"
         :link-desc="linkDesc"
+        :draggable="nodeDraggable"
     >
       <template v-slot:node="{meta}">
         <div :class="`flow-node flow-node-${meta.prop}`" v-if="meta.type === 'status'">
@@ -134,6 +135,7 @@ export default {
   },
   data() {
     return {
+      nodeDraggable: true,
       description: '',
       drawerConf: {
         title: 'Line Settings',
@@ -264,7 +266,6 @@ export default {
   },
   mounted() {
     let vm = this
-    console.log(this.statusTypes)
     Bus.$on("setStatusRange", function (range) {
       vm.statusRange = range
     })

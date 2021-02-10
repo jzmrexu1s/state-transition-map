@@ -10,7 +10,7 @@
         :link-desc="linkDesc"
     >
       <template v-slot:node="{meta}">
-        <div :class="`flow-node flow-node-${meta.prop}`">
+        <div :class="`flow-node flow-node-${meta.prop}`" v-if="meta.type === 'status'">
           <header class="ellipsis">
             {{meta.name}}
           </header>
@@ -55,6 +55,13 @@
                 </template>
               </el-table-column>
             </el-table>
+          </section>
+        </div>
+        <div :class="`flow-node flow-node-${meta.prop}`" v-else>
+          <section>
+            <div class="failure-div">
+              Failed
+            </div>
           </section>
         </div>
       </template>
@@ -167,12 +174,28 @@ export default {
               this.nodeList.push({
                 coordinate: coordinate,
                 meta: {
+                  type: 'status',
                   prop: 'start',
                   name: 'State',
                   status: status,
                 }
               })
               }
+          },
+          {
+            label: "+ Failure",
+            disable: false,
+            selected: (graph, coordinate) => {
+              this.nodeList.push({
+                coordinate: coordinate,
+                meta: {
+                  type: 'failure',
+                  prop: 'start',
+                  name: 'State',
+                  status: [],
+                }
+              })
+            }
           }
         ]
       ],
@@ -226,25 +249,29 @@ export default {
     Bus.$on("addStatus", function (status) {
       vm.statusTypes.push(status)
       for (let node of vm.nodeList) {
-        console.log(node.meta.status)
-        node.meta.status.push({
-          'name': status.name,
-          'value': vm.statusRange[0],
-          'color': status.color,
-          'edit': false})
-        console.log(node.meta.status)
+        if (node.meta.type === 'status') {
+          node.meta.status.push({
+            'name': status.name,
+            'value': vm.statusRange[0],
+            'color': status.color,
+            'edit': false})
+        }
       }
     })
     Bus.$on("removeStatus", function (id) {
       vm.statusTypes.splice(id, 1)
       for (let node of vm.nodeList) {
-        node.meta.status.splice(id, 1)
+        if (node.meta.type === 'status') {
+          node.meta.status.splice(id, 1)
+        }
       }
     })
     Bus.$on("setStatusColor", function (item) {
       vm.statusTypes[item.id].color = item.color
       for (let node of vm.nodeList) {
-        node.meta.status[item.id].color = item.color
+        if (node.meta.type === 'status') {
+          node.meta.status[item.id].color = item.color
+        }
       }
     })
     setTimeout(() => {
@@ -252,13 +279,14 @@ export default {
         {
           'coordinate': [-600, -400],
           'meta': {
+            'type': 'status',
             'prop': 'start',
             'name': 'State1',
             'status': [
               {'name': 'happy', 'value': 50, 'color': "#abcdef", 'edit': false},
               {'name': 'sad', 'value': 20, 'color': "#408BE0", 'edit': false},
               {'name': 'naive', 'value': 80, 'color': "#408BE0", 'edit': false}
-            ]
+            ],
           }
         },
       ]
@@ -335,5 +363,11 @@ ul{
 }
 .vc-chrome {
   margin: 0 auto;
+}
+.failure-div {
+  height: 50px;
+  line-height: 50px;
+  font-weight: bold;
+  color: darkred;
 }
 </style>

@@ -29,7 +29,7 @@
                   :cell-style="{padding:'5px'}"
               ></el-table-column>
               <el-table-column
-                  width="50px"
+                  width="70px"
               >
                 <template slot-scope="scope">
                   <el-progress :stroke-width="10"
@@ -40,7 +40,7 @@
               </el-table-column>
               <el-table-column
                   prop="value"
-                  width="30px"
+                  width="40px"
               >
                 <template slot-scope="scope">
                   <el-input v-if="scope.row.edit"
@@ -248,9 +248,10 @@ ul{
 .cell{
   padding: 0 0 0 3px !important;
   line-height: 20px !important;
+  text-align: center !important;
 }
 .super-flow__node{
-  width: auto !important;
+  width: 175px !important;
   height: auto !important;
 }
 .el-textarea__inner{

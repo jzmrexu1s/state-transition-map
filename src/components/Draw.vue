@@ -65,8 +65,8 @@
           </section>
         </div>
         <div :class="`flow-node flow-node-${meta.prop}`" v-else>
-          <section>
-            <div class="failure-div">
+          <section class="section-failure">
+            <div class="div-failure">
               Failed
             </div>
           </section>
@@ -161,14 +161,10 @@ export default {
       nodeMenuList: [
         [
           {
-            label: 'Delete',
+            label: 'Remove',
             disable: false,
             selected: (node, coordinate) => {
-              for (let i = 0; i < this.nodeList.length; i ++) {
-                if (this.nodeList[i].id === node.id) {
-                  this.nodeList.splice(i, 1)
-                }
-              }
+              node.remove()
             }
           }
         ],
@@ -201,7 +197,7 @@ export default {
               for (let type of this.statusTypes) {
                 status.push({'name': type.name, 'value': this.statusRange[0], 'color':type.color , 'edit': false, 'editHead': false})
               }
-              this.nodeList.push({
+              this.$refs.superFlow.graph.addNode({
                 coordinate: coordinate,
                 id: (Math.random()*10000000).toString(16).substr(0,4)+'-'+(new Date()).getTime()+'-'+Math.random().toString().substr(2,5),
                 meta: {
@@ -218,7 +214,7 @@ export default {
             label: "+ Failure",
             disable: false,
             selected: (graph, coordinate) => {
-              this.nodeList.push({
+              this.$refs.superFlow.graph.addNode({
                 id: (Math.random()*10000000).toString(16).substr(0,4)+'-'+(new Date()).getTime()+'-'+Math.random().toString().substr(2,5),
                 coordinate: coordinate,
                 meta: {
@@ -278,7 +274,7 @@ export default {
     })
     Bus.$on("addStatus", function (status) {
       vm.statusTypes.push(status)
-      for (let node of vm.nodeList) {
+      for (let node of vm.$refs.superFlow.graph.nodeList) {
         if (node.meta.type === 'status') {
           node.meta.status.push({
             'name': status.name,
@@ -290,7 +286,7 @@ export default {
     })
     Bus.$on("removeStatus", function (id) {
       vm.statusTypes.splice(id, 1)
-      for (let node of vm.nodeList) {
+      for (let node of vm.$refs.superFlow.graph.nodeList) {
         if (node.meta.type === 'status') {
           node.meta.status.splice(id, 1)
         }
@@ -298,7 +294,7 @@ export default {
     })
     Bus.$on("setStatusColor", function (item) {
       vm.statusTypes[item.id].color = item.color
-      for (let node of vm.nodeList) {
+      for (let node of vm.$refs.superFlow.graph.nodeList) {
         if (node.meta.type === 'status') {
           node.meta.status[item.id].color = item.color
         }
@@ -306,21 +302,21 @@ export default {
     })
     setTimeout(() => {
       this.nodeList = [
-        {
-          'id': 'nodeS3WgFnzCI15X58Qw',
-          'coordinate': [-600, -400],
-          'meta': {
-            'type': 'status',
-            'prop': 'start',
-            'name': 'State1',
-            'edit': false,
-            'status': [
-              {'name': 'happy', 'value': 50, 'color': "#abcdef", 'edit': false},
-              {'name': 'sad', 'value': 20, 'color': "#408BE0", 'edit': false},
-              {'name': 'naive', 'value': 80, 'color': "#408BE0", 'edit': false}
-            ],
-          }
-        },
+        // {
+        //   'id': 'nodeS3WgFnzCI15X58Qw',
+        //   'coordinate': [-600, -400],
+        //   'meta': {
+        //     'type': 'status',
+        //     'prop': 'start',
+        //     'name': 'State1',
+        //     'edit': false,
+        //     'status': [
+        //       {'name': 'happy', 'value': 50, 'color': "#abcdef", 'edit': false},
+        //       {'name': 'sad', 'value': 20, 'color': "#408BE0", 'edit': false},
+        //       {'name': 'naive', 'value': 80, 'color': "#408BE0", 'edit': false}
+        //     ],
+        //   }
+        // },
       ]
     }, 100)
   }
@@ -374,11 +370,14 @@ ul{
   text-align: left;
   line-height: 36px;
 }
-.failure-div {
-  height: 50px;
-  line-height: 50px;
+.div-failure {
+  height: 100px;
+  line-height: 100px;
   font-weight: bold;
   color: darkred;
+}
+.section-failure {
+  padding: 0 !important;
 }
 </style>
 <style>
@@ -396,6 +395,7 @@ ul{
 .super-flow__node{
   width: 175px !important;
   height: auto !important;
+  min-height: 100px;
 }
 .el-textarea__inner{
   font-family: Avenir, Helvetica, Arial, sans-serif;

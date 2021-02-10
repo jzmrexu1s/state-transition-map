@@ -96,7 +96,7 @@ export default {
       let id = this.statusTypes.indexOf(item)
       this.statusTypes.splice(id, 1)
       Bus.$emit("removeStatus", id)
-      console.log(this.statusTypes)
+      // console.log(this.statusTypes)
       this.statusColorPickerOn = false
     },
     handleStatusClickTag: function (item) {

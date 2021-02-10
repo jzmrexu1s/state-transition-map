@@ -7,6 +7,7 @@
         :origin="origin"
         :graph-menu="graphMenuList"
         :link-menu="linkMenuList"
+        :node-menu="nodeMenuList"
         :link-desc="linkDesc"
     >
       <template v-slot:node="{meta}">
@@ -150,6 +151,21 @@ export default {
       nodeList: [],
       linkList: [],
       origin: [681, 465],
+      nodeMenuList: [
+        [
+          {
+            label: 'Delete',
+            disable: false,
+            selected: (node, coordinate) => {
+              for (let i = 0; i < this.nodeList.length; i ++) {
+                if (this.nodeList[i].id === node.id) {
+                  this.nodeList.splice(i, 1)
+                }
+              }
+            }
+          }
+        ],
+      ],
       linkMenuList: [
           [
             {
@@ -173,6 +189,7 @@ export default {
               }
               this.nodeList.push({
                 coordinate: coordinate,
+                id: (Math.random()*10000000).toString(16).substr(0,4)+'-'+(new Date()).getTime()+'-'+Math.random().toString().substr(2,5),
                 meta: {
                   type: 'status',
                   prop: 'start',
@@ -187,6 +204,7 @@ export default {
             disable: false,
             selected: (graph, coordinate) => {
               this.nodeList.push({
+                id: (Math.random()*10000000).toString(16).substr(0,4)+'-'+(new Date()).getTime()+'-'+Math.random().toString().substr(2,5),
                 coordinate: coordinate,
                 meta: {
                   type: 'failure',
@@ -277,6 +295,7 @@ export default {
     setTimeout(() => {
       this.nodeList = [
         {
+          'id': 'nodeS3WgFnzCI15X58Qw',
           'coordinate': [-600, -400],
           'meta': {
             'type': 'status',

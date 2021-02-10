@@ -135,8 +135,8 @@ export default {
           setTimeout(function () {
             that.$refs.linkSettings.resetFields()
             if (!conf.info.meta) conf.info.meta = {}
-            that.$set(that.linkSetting, 'desc', info.meta ? info.meta.desc : '')
-            that.$set(that.linkSetting, 'possibility', info.meta ? info.meta.possibility: '')
+            that.$set(that.linkSetting, 'desc', info.meta.desc ? info.meta.desc : '')
+            that.$set(that.linkSetting, 'possibility', info.meta.possibility ? info.meta.possibility: '')
           }, 100)
         }
       },
@@ -180,7 +180,7 @@ export default {
       statusTypes: [],
       linkSetting: {
         desc: '',
-        possibility: 0
+        possibility: undefined
       }
     }
   },
@@ -208,6 +208,7 @@ export default {
     },
     linkDesc(link) {
       if (link.meta) {
+        if (link.meta.desc && link.meta.possibility)
         return link.meta.desc +  ': ' + String(link.meta.possibility * 100) + '%'
       }
       return ''

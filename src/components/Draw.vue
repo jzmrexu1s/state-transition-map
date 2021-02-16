@@ -138,7 +138,7 @@ export default {
       nodeDraggable: true,
       description: '',
       drawerConf: {
-        title: 'Line Settings',
+        title: 'Link Settings',
         visible: false,
         type: null,
         info: null,
@@ -239,7 +239,7 @@ export default {
   },
   methods: {
     statusComputePercentage: function (value) {
-      return value * 100 / (this.statusRange[1] - this.statusRange[0])
+      return (value - this.statusRange[0]) * 100 / (this.statusRange[1] - this.statusRange[0])
     },
     statusTableCellClassName: function ({row, column, rowIndex, columnIndex}) {
       row.index = rowIndex

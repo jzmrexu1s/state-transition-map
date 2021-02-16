@@ -42,7 +42,7 @@
     <el-row class="row-tight">
       <el-col :span="4"><div class="grid-title"></div></el-col>
       <el-col :span="20"><div class="grid-content">
-        <span>Range: from</span>
+        <span>Range of value: from</span>
         <el-input
             class="input-range"
             size="small"

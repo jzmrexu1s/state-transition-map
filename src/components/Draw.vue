@@ -10,6 +10,7 @@
         :node-menu="nodeMenuList"
         :link-desc="linkDesc"
         :draggable="nodeDraggable"
+        :link-style="linkStyle"
     >
       <template v-slot:node="{meta}">
         <div :class="`flow-node flow-node-${meta.prop}`" v-if="meta.type === 'status'">
@@ -101,6 +102,12 @@
           >
           </el-input>
         </el-form-item>
+        <el-form-item
+            label="Color"
+            prop="color"
+        >
+          <chrome-picker v-model="linkSetting.color" class="link-color-picker"></chrome-picker>
+        </el-form-item>
       </el-form>
       <span
           slot="footer"
@@ -152,6 +159,7 @@ export default {
             if (!conf.info.meta) conf.info.meta = {}
             that.$set(that.linkSetting, 'desc', info.meta.desc ? info.meta.desc : '')
             that.$set(that.linkSetting, 'possibility', info.meta.possibility ? info.meta.possibility: '')
+            that.$set(that.linkSetting.color, 'hex', info.meta.color ? info.meta.color.hex: '')
           }, 100)
         }
       },
@@ -233,7 +241,10 @@ export default {
       statusTypes: [],
       linkSetting: {
         desc: '',
-        possibility: undefined
+        possibility: undefined,
+        color: {
+          hex: '#000000',
+        }
       }
     }
   },
@@ -257,6 +268,7 @@ export default {
       const conf = this.drawerConf
       this.$set(conf.info.meta, 'desc', this.linkSetting.desc)
       this.$set(conf.info.meta, 'possibility', this.linkSetting.possibility)
+      this.$set(conf.info.meta, 'color', this.linkSetting.color)
       conf.visible = false
     },
     linkDesc(link) {
@@ -265,6 +277,13 @@ export default {
         return link.meta.desc +  ': ' + String(link.meta.possibility * 100) + '%'
       }
       return ''
+    },
+    linkStyle(link) {
+      if (link.meta && link.meta.color) {
+        return {
+          color: link.meta.color.hex
+        }
+      }
     }
   },
   mounted() {
@@ -379,6 +398,10 @@ ul{
 .section-failure {
   padding: 0 !important;
 }
+.link-color-picker {
+  margin-top: 30px;
+}
+
 </style>
 <style>
 .el-progress-bar__innerText{
@@ -412,5 +435,11 @@ ul{
 }
 .el-table_2_column_6{
   cursor: pointer;
+}
+.el-form-item__label {
+  line-height: 20px !important;
+}
+.el-form-item__content {
+  /*overflow: hidden;*/
 }
 </style>

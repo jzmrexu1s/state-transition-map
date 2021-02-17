@@ -207,6 +207,8 @@ export default {
               }
               this.$refs.superFlow.graph.addNode({
                 coordinate: coordinate,
+                width: 175,
+                height: this.nodeHeight,
                 id: (Math.random()*10000000).toString(16).substr(0,4)+'-'+(new Date()).getTime()+'-'+Math.random().toString().substr(2,5),
                 meta: {
                   type: 'status',
@@ -225,6 +227,7 @@ export default {
               this.$refs.superFlow.graph.addNode({
                 id: (Math.random()*10000000).toString(16).substr(0,4)+'-'+(new Date()).getTime()+'-'+Math.random().toString().substr(2,5),
                 coordinate: coordinate,
+                width: 175,
                 meta: {
                   type: 'failure',
                   edit: false,
@@ -246,6 +249,15 @@ export default {
           hex: '#000000',
         }
       }
+    }
+  },
+  computed: {
+    nodeHeight: function () {
+      let newHeight = this.statusTypes.length <= 3 ? 97 : 97 + (this.statusTypes.length - 3) * 21
+      for (let node of this.$refs.superFlow.graph.nodeList) {
+        node.height = newHeight
+      }
+      return newHeight
     }
   },
   methods: {
@@ -418,9 +430,9 @@ ul{
   overflow: auto !important;
 }
 .super-flow__node{
-  width: 175px !important;
-  height: auto !important;
-  min-height: 100px;
+  /*width: 175px !important;*/
+  /*height: 300px !important;*/
+  /*min-height: 100px;*/
 }
 .el-textarea__inner{
   font-family: Avenir, Helvetica, Arial, sans-serif;

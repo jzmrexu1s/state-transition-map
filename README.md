@@ -12,7 +12,7 @@ Click the number in the right-end of a row in a normal node to change the value 
 
 Right-click on the node to remove the node. 
 
-![img](file:///Users/zcw/Documents/code/state-transition-map/img/new.png?lastModify=1613567016)
+![img](img/new.png)
 
 ### Description
 
@@ -26,7 +26,7 @@ Right-click a link, then select "Edit..." to customize.
 
 Right-click a link, then select "Remove" to remove. 
 
-![img](file:///Users/zcw/Documents/code/state-transition-map/img/link-settings.png?lastModify=1613567016)
+![img](img/link-settings.png)
 
 ### Emotions
 
@@ -34,13 +34,13 @@ Go to "Configuration" tab to customize emotions.
 
 Some default emotion types have been provided. Titles and color are referred to "Plutchik's wheel of emotions". 
 
-![img](file:///Users/zcw/Documents/code/state-transition-map/img/configuration.png?lastModify=1613567016)
+![img](img/configuration.png)
 
 ### Done
 
 Finish the graph. 
 
-![img](file:///Users/zcw/Documents/code/state-transition-map/img/full.png?lastModify=1613567016)
+![img](img/full.png)
 
 ## Project setup
 

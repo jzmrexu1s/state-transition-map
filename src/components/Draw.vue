@@ -228,6 +228,7 @@ export default {
                 id: (Math.random()*10000000).toString(16).substr(0,4)+'-'+(new Date()).getTime()+'-'+Math.random().toString().substr(2,5),
                 coordinate: coordinate,
                 width: 175,
+                height: 97,
                 meta: {
                   type: 'failure',
                   edit: false,
@@ -255,7 +256,7 @@ export default {
     nodeHeight: function () {
       let newHeight = this.statusTypes.length <= 3 ? 97 : 97 + (this.statusTypes.length - 3) * 21
       for (let node of this.$refs.superFlow.graph.nodeList) {
-        node.height = newHeight
+        if (node.meta.type === 'status') node.height = newHeight
       }
       return newHeight
     }

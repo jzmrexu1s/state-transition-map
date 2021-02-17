@@ -242,7 +242,7 @@ export default {
           }
         ]
       ],
-      statusRange: [0, 100],
+      statusRange: [0, 5],
       statusTypes: [],
       linkSetting: {
         desc: '',

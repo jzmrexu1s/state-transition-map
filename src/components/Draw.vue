@@ -11,6 +11,7 @@
         :link-desc="linkDesc"
         :draggable="nodeDraggable"
         :link-style="linkStyle"
+        :link-padding=200
     >
       <template v-slot:node="{meta}">
         <div :class="`flow-node flow-node-${meta.prop}`" v-if="meta.type === 'status'">
@@ -294,7 +295,7 @@ export default {
     linkStyle(link) {
       if (link.meta && link.meta.color) {
         return {
-          color: link.meta.color.hex
+          color: link.meta.color.hex,
         }
       }
     }

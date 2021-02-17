@@ -83,7 +83,7 @@ export default {
       statusSelectedColor: '#194d33',
       statusSelectedIdx: 0,
       statusColorPickerOn: false,
-      statusRange: [0, 100]
+      statusRange: [0, 5]
     }
   },
   watch: {

@@ -144,6 +144,7 @@ export default {
   data() {
     return {
       nodeDraggable: true,
+      nodeHeight: 0,
       description: '',
       drawerConf: {
         title: 'Link Settings',
@@ -242,7 +243,7 @@ export default {
           }
         ]
       ],
-      statusRange: [0, 5],
+      statusRange: [0, 10],
       statusTypes: [],
       linkSetting: {
         desc: '',
@@ -253,14 +254,17 @@ export default {
       }
     }
   },
-  computed: {
-    nodeHeight: function () {
+  watch: {
+    statusTypes: function (after) {
       let newHeight = this.statusTypes.length <= 3 ? 97 : 97 + (this.statusTypes.length - 3) * 21
       for (let node of this.$refs.superFlow.graph.nodeList) {
         if (node.meta.type === 'status') node.height = newHeight
       }
-      return newHeight
+      this.nodeHeight = newHeight
     }
+  },
+  computed: {
+
   },
   methods: {
     statusComputePercentage: function (value) {
@@ -307,6 +311,7 @@ export default {
     })
     Bus.$on("addStatus", function (status) {
       vm.statusTypes.push(status)
+      console.log('added')
       for (let node of vm.$refs.superFlow.graph.nodeList) {
         if (node.meta.type === 'status') {
           node.meta.status.push({
@@ -334,22 +339,15 @@ export default {
       }
     })
     setTimeout(() => {
-      this.nodeList = [
-        // {
-        //   'id': 'nodeS3WgFnzCI15X58Qw',
-        //   'coordinate': [-600, -400],
-        //   'meta': {
-        //     'type': 'status',
-        //     'prop': 'start',
-        //     'name': 'State1',
-        //     'edit': false,
-        //     'status': [
-        //       {'name': 'happy', 'value': 50, 'color': "#abcdef", 'edit': false},
-        //       {'name': 'sad', 'value': 20, 'color': "#408BE0", 'edit': false},
-        //       {'name': 'naive', 'value': 80, 'color': "#408BE0", 'edit': false}
-        //     ],
-        //   }
-        // },
+      this.statusTypes =  [
+        {"name": "Anticipation", "color": "#F97B28"},
+        {"name": "Joy", "color": "#FFE766"},
+        {"name": "Trust", "color": "#36B22F"},
+        {"name": "Fear", "color": "#277F21"},
+        {"name": "Surprise", "color": "#2089DB"},
+        {"name": "Sadness", "color": "#0014C1"},
+        {"name": "Disgust", "color": "#D611D8"},
+        {"name": "Anger", "color": "#CD0015"},
       ]
     }, 100)
   }

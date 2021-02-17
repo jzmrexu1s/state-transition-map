@@ -83,7 +83,7 @@ export default {
       statusSelectedColor: '#194d33',
       statusSelectedIdx: 0,
       statusColorPickerOn: false,
-      statusRange: [0, 5]
+      statusRange: [0, 10]
     }
   },
   watch: {
@@ -127,7 +127,7 @@ export default {
     },
   },
   mounted () {
-    let defaultTypes = [
+    this.statusTypes = [
       {"name": "Anticipation", "color": "#F97B28"},
       {"name": "Joy", "color": "#FFE766"},
       {"name": "Trust", "color": "#36B22F"},
@@ -137,11 +137,6 @@ export default {
       {"name": "Disgust", "color": "#D611D8"},
       {"name": "Anger", "color": "#CD0015"},
     ]
-    this.statusTypes = defaultTypes
-    for (let type of defaultTypes) {
-      Bus.$emit("addStatus", type)
-    }
-
   },
   components: {
     'chrome-picker': Chrome

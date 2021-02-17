@@ -127,6 +127,21 @@ export default {
     },
   },
   mounted () {
+    let defaultTypes = [
+      {"name": "Anticipation", "color": "#F97B28"},
+      {"name": "Joy", "color": "#FFE766"},
+      {"name": "Trust", "color": "#36B22F"},
+      {"name": "Fear", "color": "#277F21"},
+      {"name": "Surprise", "color": "#2089DB"},
+      {"name": "Sadness", "color": "#0014C1"},
+      {"name": "Disgust", "color": "#D611D8"},
+      {"name": "Anger", "color": "#CD0015"},
+    ]
+    this.statusTypes = defaultTypes
+    for (let type of defaultTypes) {
+      Bus.$emit("addStatus", type)
+    }
+
   },
   components: {
     'chrome-picker': Chrome

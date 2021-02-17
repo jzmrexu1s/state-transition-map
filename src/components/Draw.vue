@@ -414,6 +414,8 @@ ul{
   padding: 0 0 0 3px !important;
   line-height: 20px !important;
   text-align: center !important;
+  max-height: 20px;
+  overflow: auto !important;
 }
 .super-flow__node{
   width: 175px !important;
@@ -441,5 +443,9 @@ ul{
 }
 .el-form-item__content {
   /*overflow: hidden;*/
+}
+::-webkit-scrollbar {
+  /*隐藏滚轮*/
+  display: none;
 }
 </style>
